@@ -115,7 +115,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         }
       ]
     }),
-    preRender('https://inga-js.firebaseapp.com'),
+    preRender('https://inga-js.firebaseapp.com/#/'),
   ]
 })
 
