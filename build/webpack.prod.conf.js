@@ -13,6 +13,8 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin')
 const loadMinified = require('./load-minified')
+var preRender = require('./pre-render')
+var prerenderRoutes = require('./pre-render-routes')
 
 const env = config.build.env
 
@@ -65,6 +67,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
+      prerenderRoutes: JSON.stringify(prerenderRoutes()),
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency',
       serviceWorkerLoader: `<script>${loadMinified(path.join(__dirname,
@@ -111,7 +114,8 @@ const webpackConfig = merge(baseWebpackConfig, {
           handler: 'cacheFirst'
         }
       ]
-    })
+    }),
+    preRender('http://127.0.0.1:5000/'),
   ]
 })
 

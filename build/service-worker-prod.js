@@ -18,6 +18,16 @@
           (window.location.protocol === 'https:' || isLocalhost)) {
         navigator.serviceWorker.register('service-worker.js')
         .then(function(registration) {
+          registration.pushManager.subscribe({userVisibleOnly: true})
+          .then((subscription) => {
+            const uid = subscription.endpoint.split('gcm/send/')[1];
+            const options = {
+                method: 'POST',
+                headers: new Headers({'Content-Type': 'application/json'}),
+                body: JSON.stringify({ uid: uid })
+            };
+            fetch(options);
+          });
           // updatefound is fired if service-worker.js changes.
           registration.onupdatefound = function() {
             // updatefound is also fired the very first time the SW is installed,
